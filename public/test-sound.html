@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sound Test</h1>
+  <p>Click the button below to test if the hover sound works:</p>
+  <button id="playButton">Play Sound</button>
+  <p id="status">Status: waiting for click</p>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.getElementById('playButton');
+      const status = document.getElementById('status');
+      const audio = new Audio('/sounds/hover-sound.mp3');
+      
+      audio.addEventListener('canplaythrough', () => {
+        status.textContent = 'Status: Sound loaded successfully';
+      });
+      
+      audio.addEventListener('error', (e) => {
+        status.textContent = 'Status: Error loading sound - ' + e.message;
+        console.error('Audio error:', e);
+      });
+
+      button.addEventListener('click', function() {
+        status.textContent = 'Status: Playing sound...';
+        audio.currentTime = 0;
+        audio.play().then(() => {
+          status.textContent = 'Status: Sound played successfully';
+        }).catch(err => {
+          status.textContent = 'Status: Error playing sound - ' + err.message;
+          console.error('Play error:', err);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
